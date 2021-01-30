@@ -1,74 +1,28 @@
+# README
 
-```
- cd infra
- kubectl apply -f hexagonal-namespace.yaml
-```
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-#### I - DEPLOY POSTGRES DATABASE
+Things you may want to cover:
 
-```
- cd infra/db
-```
+* Ruby version
 
-####### 1 - Create namespace for database
-```
- kubectl apply -f 001-namespace.yaml
-```
+* System dependencies
 
-####### 2 - Create kubernetes pods/Deployment/Service for database
-Set Postrgres users and password in deployment_values.yaml file
+* Configuration
 
-```
- helm repo add bitnami https://charts.bitnami.com/bitnami
- helm install db-postgres -f deployment_values.yaml bitnami/postgresql --namespace db
-```
+* Database creation
 
+* Database initialization
 
-#### II - DEPLOY JENKINS
+* How to run the test suite
 
-```
- cd infra/jenkins
-```
+* Services (job queues, cache servers, search engines, etc.)
 
-####### 1 - Create new jenkins image and push to your repo
+* Deployment instructions
 
-For registry env variable please , use your own docker registry and login with docker login command
-```
- export registry = hexagonal/jenkins
- export tag = 1.0
- docker build -t $registry:$tag .
- docker tag  $registry:$tag
- docker push $registry:$tag
-```
+* ...
 
-####### 1 - Create service account and role for jenkins
-```
- kubectl apply -f roles/
-```
-a service account jenkins-sa will be created
+Execution steps
 
-
-####### 2 - Deploy jenkins kubernetes resources
-```
- helm install ci-jenkins -f jenkins_deployment_values.yaml ./jenkins-k8s/helm/jenkins-k8s --set image.repository=$registry --set image.tag=$tag --set replicaCount=1 --namespace hexagonal-test
-```
-
-
-#### III - DEPLOY INGRESS CONTROLLER
-
-```
- cd infra/ingress
-```
-
-####### 1 - Deploy Nginx Ingress Controller
-```
- helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
- helm repo update
- helm install nginx-hexagonal-controller -f deployment_values.yaml ingress-nginx/ingress-nginx --namespace hexagonal-test
- kubectl apply hexagonal-ingress.yaml
-```
-
-####### 2 - Deploy Ingress
-```
- kubectl apply hexagonal-ingress.yaml
-```
+docker build -t darex/hexagonal:1.0 .
